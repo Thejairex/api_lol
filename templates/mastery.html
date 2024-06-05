@@ -1,0 +1,33 @@
+{% extends 'layout.html'%}
+
+
+{% block title %} Maestrias de {% endblock title %}
+{% block body %}
+
+<main class="m-5">
+    <table class="table table-hover table-striped-columns">
+        <thead>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Nivel de Maestria</th>
+            <th scope="col">Puntos de Maestria</th>
+            <th scope="col">Notas</th>
+        </thead>
+        <tbody>
+            {% for i in championId %}
+            <tr>
+                <th scope="row">{{ i }}</th>
+                <td>{{ championName[i] }}</td>
+                <td>{{ championLevel[i] }}</td>
+                <td>{{ championPoint[i] }}</td>
+                <td>
+                {% for grade in milestoneGrades[i] %} 
+                    {{grade}}
+                {% endfor %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+
+{% endblock body %}
