@@ -1,10 +1,13 @@
 import requests
 import pandas as pd
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 class Tft():
     def __init__(self, name, tag) -> None:
-        self.api_key = "RGAPI-0122bd6d-f436-45d6-b6fa-422088f9ccfa"
-        self.summonerId = "9RWH_BRxAbe7mi2hlM9EEI3sOx8OYip0utOgn0IkoQpNt_k"
+        self.api_key = os.getenv("API_KEY")
+        self.summonerId = os.getenv("SUMMONER")
 
         self.url_base = "https://la2.api.riotgames.com"
         self.header = {
