@@ -21,6 +21,7 @@ class Tft():
 
     def get_url(self, url):
         response = requests.get(url, headers=self.header)
+        print("response: ", response.status_code)
         if response.status_code == 404:
             return None
         return response.json()
@@ -38,7 +39,9 @@ class Tft():
     def mastery(self):
         url = self.url_base + f"/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}"
         df = pd.DataFrame(self.get_url(url)) 
+        # print(df)
         df.drop("puuid", axis=1, inplace=True)
+        # print(df)
         return df.to_dict()
 
     def spectator(self):
@@ -65,7 +68,7 @@ class Ddragon():
         url = 'https://ddragon.leagueoflegends.com/api/versions.json'
         return self.get_url(url)[0]
     
-    def getIndexChamps(self):
+    def getIndexChamps(self) -> dict:
         champions = {"id": [],
                      "name": []}
         url = f"https://ddragon.leagueoflegends.com/cdn/{self.current_version}/data/es_MX/champion.json"
@@ -75,7 +78,7 @@ class Ddragon():
             champions["name"].append(key)
         
         return champions
-    
+
     def getChampByName(self, name: str):
         name = name.capitalize()
         url = f"https://ddragon.leagueoflegends.com/cdn/{self.current_version}/data/es_MX/champion/{name}.json"
@@ -93,6 +96,9 @@ class Ddragon():
         return data
         
 if __name__ == "__main__":
+    tft = Tft("Thejairex", "las")
+    print(tft.puuid)
+    tft.mastery()
     dragon = Ddragon()
     # print(dragon.get_all_champ())
     # print(dragon.getChampByName("JHIN"))

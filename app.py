@@ -1,27 +1,26 @@
 from flask import *
 from dotenv import load_dotenv
-from jinja2 import Environment
 import os
 
 
 from api import Tft, Ddragon
 
-app = Flask(__name__)
 load_dotenv()
-app.secret_key = 'supersecretkey'
-# print(os.getenv("USERNAME"),os.getenv("TAG"))
-tft = Tft(os.getenv("USERNAME"),os.getenv("TAG"))
+
+"""Constansts Values"""
+app = Flask(__name__)
 dragon = Ddragon()
-
-# Función personalizada que envuelve la función type()
-def get_type(obj):
-    return type(obj)
-
-# Crear un entorno de Jinja
-env = Environment()
-
-# Agregar la función personalizada al entorno de Jinja
-env.globals['type'] = get_type
+app.secret_key = 'supersecretkey'
+tft = Tft(os.getenv("USERNAME"),os.getenv("TAG"))
+base = "https://ddragon.leagueoflegends.com/cdn/14.11.1/img/"
+images = {"splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/", #
+          "passive": base + "passive/",          # json.passive.image.full
+          "spell": base + "spell/"}             # spell.image.full
+print(images)
+del base
+# imgSplash = base  + "champion/splash/"
+# imgPasive = base + "passive/" 
+# imgSpell = base + "spell/" 
 
 
 @app.route("/")
@@ -41,6 +40,14 @@ def mastery():
                            championLevel= championLevel,
                            championPoint =championPoint ,
                            milestoneGrades = milestoneGrades)
+
+
+@app.route("/champions/<champName>")
+def champRender(champName):
+    champInfo = dragon.getChampByName(champName)
+    
+    return render_template("champ.html", name=champName, json=champInfo, images=images)
+
 
 @app.route("/api/mastery")
 def api_mastery():
@@ -67,7 +74,7 @@ def api_mastery():
 def api_mastery_show():
     json = tft.mastery()
     champs = dragon.getIndexChamps()
-    
+
     for id, key in json["championId"].items():
         i = champs["id"].index(key)
         json["championId"][id] = champs["name"][i]

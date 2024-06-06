@@ -1,0 +1,76 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+    <!-- <main>
+        <h1>{{name}}</h1>
+    </main> -->
+    <style>
+        .champion-image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .spell-image, .passive-image {
+            width: 48px;
+            height: 48px;
+        }
+    </style>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{images.splash + 'Jhin_0.jpg'}}" alt="Jhin" class="champion-image rounded ">
+            </div>
+            <div class="col-md-8">
+                <h1 class="fs-1">{{json.name}}</h1>
+                <h3 id="champion-title">{{json.title}}</h3>
+                <p id="champion-lore">{{json.lore}}</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h3>Habilidades</h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Pasiva</h5>
+                        <img id="passive-image" src="{{images.passive + json.passive.image.full}}" class="passive-image my-2">
+                        <p id="passive-name">{{json.passive.name}}</p>
+                        <p id="passive-description">{{json.passive.description}}</p>
+                    </div>
+                    <div class="col-md-9">
+                        <h5>Activas</h5>
+                        <div id="spells" class="row">
+                            {% for spell in json.spells %}
+                            <div class="col-md-3">
+                                <img src="{{images.spell + spell.image.full}}" alt="" class="spell-image  my-2">
+                                <p>{{spell.name}}</p>
+                                <p>{{spell.description}}</p>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Consejos para Aliados</h4>
+                <ul id="ally-tips list-group-flush" class="list-group list-group-flush">
+                    {% for tip in json.allytips %}
+                        <li class="list-group-item mb-3">{{tip}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>Consejos para Enemigos</h4>
+                <ul id="enemy-tips " class="list-group list-group-flush">
+                    {% for tip in json.enemytips %}
+                        <li class="list-group-item mb-3">{{tip}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+{% endblock body %}

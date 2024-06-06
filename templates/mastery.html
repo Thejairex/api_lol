@@ -1,7 +1,7 @@
 {% extends 'layout.html'%}
 
 
-{% block title %} Maestrias de {% endblock title %}
+{% block title %} Maestrias de Thejairex#las{% endblock title %}
 {% block body %}
 
 <main class="m-5">
@@ -17,7 +17,7 @@
             {% for i in championId %}
             <tr>
                 <th scope="row">{{ i }}</th>
-                <td>{{ championName[i] }}</td>
+                <td><a href="{{ url_for('champ', champName=championName[i]) }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ championName[i] }}</a></td>
                 <td>{{ championLevel[i] }}</td>
                 <td>{{ championPoint[i] }}</td>
                 <td>
