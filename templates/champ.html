@@ -18,12 +18,12 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-4">
-                <img src="{{images.splash + 'Jhin_0.jpg'}}" alt="Jhin" class="champion-image rounded ">
+                <img src="{{images.splash + json.name +'_0.jpg'}}" alt="Jhin" class="champion-image rounded ">
             </div>
             <div class="col-md-8">
                 <h1 class="fs-1">{{json.name}}</h1>
-                <h3 id="champion-title">{{json.title}}</h3>
-                <p id="champion-lore">{{json.lore}}</p>
+                <h3 id="champion-title">{{json.title | safe}}</h3>
+                <p id="champion-lore">{{json.lore | safe}}</p>
             </div>
         </div>
         <div class="row mt-4">
@@ -32,9 +32,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <h5>Pasiva</h5>
-                        <img id="passive-image" src="{{images.passive + json.passive.image.full}}" class="passive-image my-2">
-                        <p id="passive-name">{{json.passive.name}}</p>
-                        <p id="passive-description">{{json.passive.description}}</p>
+                        <img id="passive-image" src="{{images.passive + json.passive.image.full }}" class="passive-image my-2">
+                        <p id="passive-name">{{json.passive.name }}</p>
+                        <p id="passive-description">{{json.passive.description | safe}}</p>
                     </div>
                     <div class="col-md-9">
                         <h5>Activas</h5>
@@ -42,8 +42,8 @@
                             {% for spell in json.spells %}
                             <div class="col-md-3">
                                 <img src="{{images.spell + spell.image.full}}" alt="" class="spell-image  my-2">
-                                <p>{{spell.name}}</p>
-                                <p>{{spell.description}}</p>
+                                <p>{{spell.name | safe}}</p>
+                                <p>{{spell.description | safe}}</p>
                             </div>
                             {% endfor %}
                             
