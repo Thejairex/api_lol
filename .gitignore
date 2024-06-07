@@ -1,5 +1,10 @@
 # data exports
 *.csv
+pagina_modificada.html
+
+# ignore files
+scrapt.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

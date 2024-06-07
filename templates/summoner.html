@@ -1,0 +1,153 @@
+{% extends 'layout.html'%}
+
+{% block title %}Thejairex#las{% endblock title %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h2 class="text-center">Datos del Invocador</h2>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2 class="text-center mb-3">Información del Invocador</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Nivel</th>
+                        <th scope="col">Región</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ summoner.gameName }}</td>
+                        <td>{{ summoner.summonerLevel }}</td>
+                        <td>LAS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Estadísticas del Invocador</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Partidas Jugadas</th>
+                        <th>Victorias</th>
+                        <th>Derrotas</th>
+                        <th>Ratio de Victorias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {{stats.totalGames}} </td>
+                        <td> {{stats.win}} </td>
+                        <td> {{stats.lose }}</td>
+                        <td> {{ '%.2f'|format((stats.win / stats.totalGames * 100) if stats.totalGames > 0 else 0) }}
+                            %</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2 class="text-center mb-3">Rendimiento por Roles</h2>
+            <canvas id="rolesChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-center mb-3">Desempeño por Campeón</h2>
+            <canvas id="championsChart"></canvas>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2 class="text-center mb-3">Campeones más Jugados</h2>
+            <table class="table summoner-stats-table">
+                <thead>
+                    <tr>
+                        <th>Campeón</th>
+                        <th>Partidas Jugadas</th>
+                        <th>Victorias</th>
+                        <th>Derrotas</th>
+                        <th>Ratio de Victorias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for champion in champions.values() %}
+                    <tr>
+                        <td> <a href="{{ url_for('champRender', champName=champion.name) }}" class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{champion.name}}</a> </td>
+                        <td> {{champion.games}} </td>
+                        <td> {{champion.wins}} </td>
+                        <td> {{champion.lose}} </td>
+                        <td>  {{'%.2f'|format((champion.wins / champion.games * 100) if champion.games > 0 else 0)}} %</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rolesChart = new Chart(document.getElementById('rolesChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Top', 'Jungla', 'Mid', 'ADC', 'Support'],
+                datasets: [{
+                    data: [ 
+                    {{'%.2f'|format((roles.TOP.wins / roles.TOP.games * 100) if roles.TOP.games > 0 else 0)}} ,  
+                    {{'%.2f'|format((roles.JUNGLE.wins / roles.JUNGLE.games * 100) if roles.JUNGLE.games > 0 else 0)}} ,
+                    {{'%.2f'|format((roles.MIDDLE.wins / roles.MIDDLE.games * 100) if roles.MIDDLE.games > 0 else 0)}} ,
+                    {{'%.2f'|format((roles.BOTTOM.wins / roles.BOTTOM.games * 100) if roles.BOTTOM.games > 0 else 0)}} , 
+                    {{'%.2f'|format((roles.UTILITY.wins / roles.UTILITY.games * 100) if roles.UTILITY.games > 0 else 0)}} 
+                    ],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Distribución por Roles'
+                }
+            }
+    })});
+
+    const championsChart = new Chart(document.getElementById('championsChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: [{% for champion in champions.values() %}'{{ champion.name }}',{% endfor %}],
+            datasets: [{
+                label: 'Partidas Jugadas',
+                data: [{% for champion in champions.values() %}{{ champion.games }},{% endfor %}],
+                backgroundColor: '#36A2EB'
+            }, {
+                label: 'Victorias',
+                data: [{% for champion in champions.values() %}{{ champion.wins }},{% endfor %}],
+                backgroundColor: '#4BC0C0'
+            }, {
+                label: 'Derrotas',
+                data: [{% for champion in champions.values() %}{{ champion.lose }},{% endfor %}],
+                backgroundColor: '#FF6384'
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Desempeño por Campeón'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }});
+</script>
+
+{% endblock body %}

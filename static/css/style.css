@@ -1,0 +1,23 @@
+.summoner-stats-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.summoner-stats-table th,
+.summoner-stats-table td {
+    text-align: left;
+    padding: 8px;
+}
+/* 
+.summoner-stats-table th {
+    background-color: #f2f2f2;
+} */
+
+.champion-link {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.champion-link:hover {
+    text-decoration: underline;
+}
